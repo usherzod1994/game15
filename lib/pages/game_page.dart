@@ -46,8 +46,7 @@ class _GamePageState extends State<GamePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Game'),
-        elevation: 0,
+        title: Text('Game')
       ),
       body: Stack(
         children: [
@@ -99,7 +98,7 @@ class _GamePageState extends State<GamePage> {
                           ),
                         ),
                         Text(
-                          "${_hour_text}:${_minut_text}:${_secound_text}",
+                          "${timeFormat(_time)}",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -173,7 +172,10 @@ class _GamePageState extends State<GamePage> {
                     color: Colors.teal,
                     child: ElevatedButton(
                       onPressed: () {
-                        restart();
+                        setState(() {
+                          restart();
+                          loadViews();
+                        });
                       },
                       child: Text("Restart"),
                       style: ElevatedButton.styleFrom(
@@ -200,16 +202,11 @@ class _GamePageState extends State<GamePage> {
         _numberList.add(i + 1);
       }
     }
-    _numberList.shuffle();
+    // _numberList.shuffle();
     _numberList.add(16);
 
     _score = 0;
     _time = 0;
-    _minut = 0;
-    _hour = 0;
-    _secound_text = "00";
-    _minut_text = "00";
-    _hour_text = "00";
     startTimeout();
   }
 
@@ -242,20 +239,20 @@ class _GamePageState extends State<GamePage> {
 
     if(checked){
       restart();
-      showAwesomeDialog(context, "Congratulations ! ! !", "You are wen");
+      showAwesomeDialog(context, "Congratulations ! ! !", "You are wen",_score, _time);
     }
   }
 
   void restart() {
     _timer.cancel();
-    loadViews();
   }
+
 
   void startTimeout(){
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         _time++;
-        if(_time < 10){
+        /*if(_time < 10){
           _secound_text = "0$_time";
         }else if(10 <= _time && _time < 60){
           _secound_text = "$_time";
@@ -280,10 +277,18 @@ class _GamePageState extends State<GamePage> {
         }else{
           _hour = 0;
           _hour++;
-        }
-
+        }*/
       });
     });
+
+  }
+
+  String timeFormat(int second){
+
+    String min = (second/60).round()<10?"0${(second/60).round()}":"${(second/60).round()}";
+    String sec = (second - (second/60).round()*60) < 10 ? "0${(second - (second/60).round()*60)}":"${(second - (second/60).round()*60)}";
+
+    return "${min}:${sec}";
   }
 
   @override

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:game15/pages/adaptive_page.dart';
+import 'package:game15/pages/enter_page.dart';
 import 'package:game15/pages/game_page.dart';
 
 void main() {
@@ -15,7 +17,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: GamePage(),
+      home: EnterPage(),
     );
   }
 }
